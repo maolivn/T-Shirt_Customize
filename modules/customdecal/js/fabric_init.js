@@ -2,7 +2,7 @@
  * Created by Tan on 11/27/13.
  */
 //if(jQuery) alert('jQuery');
-var canvas, imgInstance;
+var canvas, imgInstance, txtInstance;
 $(document).ready(function() {
     //Remove Left and Right Column
     $('#left_column').remove();
@@ -12,9 +12,24 @@ $(document).ready(function() {
     $('#center_column').removeClass('grid_5').addClass('grid_9');
 
     initCanvas();
+
+    //BOF add text object
+    txtInstance = new fabric.Text('', {
+        id: 'text',
+        fontSize: 30,
+        hasRotatingPoint: false,
+        hasControls: false,
+        hasBorders: false
+    });
+    canvas.add(txtInstance);
+    txtInstance.center().setCoords();
+    canvas.renderAll();
+    updateTextPosition(txtInstance);
+    //EOF add text object
 });
 
 $(function (){
+    //BOF create image slider
     $('.vert-flip-image').click(function(e){
         e.preventDefault();
         if(imgInstance.getFlipX()){
@@ -106,17 +121,67 @@ $(function (){
             }
         }
     });
+    //EOF create image slider
 
+    //BOF create text slider
+    $('#slider-range-max').slider({
+        range:"max",
+        min: 15,
+        max: 100,
+        value: 30,
+        step: 1,
+        slide: function(event, ui) {
+            txtInstance.setFontSize(ui.value);
+            canvas.renderAll();
+            $('#sizetext').val(ui.value);
+        }
+    });
+    //TODO: find a way to set letter spacing on canvas
+    $('#slider-range-max-space').slider({
+        range: "max",
+        min: 0,
+        max: 10,
+        value: 0,
+        slide: function(event, ui){
+            $('#spacetext').val(ui.value);
+        }
+    });
+    $('#slider-range-max-opacity').slider({
+        range: "max",
+        value: 10,
+        min: 1,
+        max: 10,
+        step: 1,
+        slide: function(event, ui) {
+            txtInstance.setOpacity(ui.value / 10);
+            canvas.renderAll();
+            $('#opactext').val(ui.value);
+        }
+    });
+    //EOF create text slider
+
+    //Update text
+    $('#letter').keyup(function(){
+        txtInstance.setText($(this).val());
+        canvas.setActiveObject(txtInstance);
+        canvas.renderAll();
+    });
+
+    //Change text font
+    $('#font_select').change(function() {
+        txtInstance.setFontFamily($(this).val());
+        canvas.renderAll();
+    });
+
+    //BOF create image spinner
     $( "#spinner-I" ).spinner({
         step: 1,
         change: function() {
             imgInstance.setLeft(parseInt($('#spinner-I').val()) * 10).setCoords();
-//            imgInstance.setCoords();
             canvas.renderAll();
         },
         stop: function() {
             imgInstance.setLeft(parseInt($('#spinner-I').val()) * 10).setCoords();
-//            imgInstance.setCoords();
             canvas.renderAll();
         }
     });
@@ -131,24 +196,75 @@ $(function (){
             canvas.renderAll();
         }
     });
+    //EOF create image spinner
 
+    //BOF create text spinner
+    $( "#spinner-A" ).spinner({
+        step: 1,
+        change: function() {
+            txtInstance.setLeft(parseInt($('#spinner-A').val()) * 10).setCoords();
+            canvas.renderAll();
+        },
+        stop: function() {
+            txtInstance.setLeft(parseInt($('#spinner-A').val()) * 10).setCoords();
+            canvas.renderAll();
+        }
+    });
+    $( "#spinner-B" ).spinner({
+        step: 1,
+        change: function() {
+            txtInstance.setTop(parseInt($('#spinner-B').val()) * 10).setCoords();
+            canvas.renderAll();
+        },
+        stop: function() {
+            txtInstance.setTop(parseInt($('#spinner-B').val()) * 10).setCoords();
+            canvas.renderAll();
+        }
+    });
+    //EOF create text spinner
+
+    //Center Image
     $('.image-center').click(function() {
        imgInstance.center().setCoords();
        canvas.renderAll();
-       updatePosition(imgInstance);
+       updateImagePosition(imgInstance);
+    });
+
+    //Center Text
+    $('.center_align').click(function() {
+        txtInstance.centerH();
+        canvas.renderAll();
+        updateTextPosition(txtInstance);
     });
 
     canvas.on('object:moving', function(e) {
         var activeObject = e.target;
-        updatePosition(activeObject);
+        updateImagePosition(activeObject);
+        updateTextPosition(activeObject);
     });
 
-    //Upload Image functions
+    //Upload Image
     $('#image-pop').click(function () {
+        var img_block = $('#image_block');
+
+        if(img_block.hasClass('hide')){
+            $('#txt_block').addClass('hide');
+            img_block.removeClass('hide');
+        }
         $('#fileupload').click();
     });
+
     $('#fileupload').change(function (evt) {
         fileSelect(evt);
+    });
+
+    //Show text panel
+    $('#text_menubar').click(function() {
+        var txt_block = $('#txt_block');
+        if(txt_block.hasClass('hide')){
+            $('#image_block').addClass('hide');
+            txt_block.removeClass('hide');
+        }
     });
 });
 
@@ -202,21 +318,25 @@ function initStage(image) {
         lockUniScaling: true,
         centeredRotation: true
     });
-    imgInstance.id = 'puppy';
+    imgInstance.id = 'image';
 
     canvas.add(imgInstance);
     canvas.setActiveObject(imgInstance);
     imgInstance.center().setCoords();
     canvas.renderAll();
 
-    updatePosition(imgInstance);
+    updateImagePosition(imgInstance);
     //Reset Slider Value
     $( "#ImageRotationSlider" ).slider( "value", 0 );
     $( "#rotate_value" ).val(0);
 }
-function updatePosition(object){
+function updateImagePosition(object){
     $('#spinner-I').val(Math.round(object.getLeft() / 10));
     $('#spinner-J').val(Math.round(object.getTop() / 10));
+}
+function updateTextPosition(obj) {
+    $('#spinner-A').val(Math.round(obj.getLeft() / 10));
+    $('#spinner-B').val(Math.round(obj.getTop() / 10));
 }
 function initCanvas(){
     //BOF Create Canvas

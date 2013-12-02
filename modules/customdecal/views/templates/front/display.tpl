@@ -2,7 +2,8 @@
 <input type="file" style="display: none" id="fileupload">
 <div id="decal_left" class="left">
     <div class="block tags_block" id="tags_block_left">
-        {include file="$block_tpl_path/image_block.tpl"}
+        <div id="image_block" class="hide">{include file="$block_tpl_path/image_block.tpl"}</div>
+        <div id="txt_block">{include file="$block_tpl_path/txt_block.tpl"}</div>
     </div>
 </div>
 <div id="canvas-wrapper" class="editor-area left">

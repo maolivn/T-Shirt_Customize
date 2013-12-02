@@ -1,0 +1,144 @@
+@charset "utf-8";
+/* CSS Document */
+
+@font-face {
+                font-family: 'ballon';
+                src: url('../fonts/ballon.ttf');
+}
+
+@font-face {
+    font-family: 'sewer';
+    src: url('../fonts/sewer.eot');
+    src: url('../fonts/sewer.eot') format('embedded-opentype'),
+         url('../fonts/sewer.woff') format('woff'),
+         url('../fonts/sewer.ttf') format('truetype'),
+         url('../fonts/sewer.svg#SewerSysRegular') format('svg');
+	font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: '80db';
+    src: url('../fonts/80db.eot');
+    src: url('../fonts/80db.eot') format('embedded-opentype'),
+         url('../fonts/80db.woff') format('woff'),
+         url('../fonts/80db.ttf') format('truetype'),
+         url('../fonts/80db.svg#80DecibelsRegular') format('svg');
+	font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'WavedLineRegular';
+    src: url('../fonts/waved.eot');
+    src: url('../fonts/waved.eot') format('embedded-opentype'),
+         url('../fonts/waved.woff') format('woff'),
+         url('../fonts/waved.ttf') format('truetype'),
+         url('../fonts/waved.svg#WavedLineRegular') format('svg');
+	font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HorrendousRegular';
+    src: url('../fonts/horrendo.eot');
+    src: url('../fonts/horrendo.eot') format('embedded-opentype'),
+         url('../fonts/horrendo.woff') format('woff'),
+         url('../fonts/horrendo.ttf') format('truetype'),
+         url('../fonts/horrendo.svg#HorrendousRegular') format('svg');
+	font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'XposedRegular';
+    src: url('../fonts/xposed.eot');
+    src: url('../fonts/xposed.eot') format('embedded-opentype'),
+         url('../fonts/xposed.woff') format('woff'),
+         url('../fonts/xposed.ttf') format('truetype'),
+         url('../fonts/xposed.svg#XposedRegular') format('svg');
+	font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BitstreamVeraSansBold';
+    src: url('../fonts/verasansbold.eot');
+    src: url('../fonts/verasansbold.eot') format('embedded-opentype'),
+         url('../fonts/verasansbold.woff') format('woff'),
+         /*url('../fonts/verasansbold.ttf') format('truetype'),*/
+         url('../fonts/verasansbold.svg#BitstreamVeraSansBold') format('svg');
+	font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MilitRegular';
+    /*src: url('../fonts/milit.eot');*/
+    /*src: url('../fonts/milit.eot') format('embedded-opentype'),*/
+         /*url('../fonts/milit.woff') format('woff'),*/
+         url('../fonts/milit.ttf') format('truetype'),
+         /*url('../fonts/milit.svg#MilitRegular') format('svg');*/
+	font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'MoltenRegular';
+    src: url('../fonts/molten.eot');
+    src: url('../fonts/molten.eot') format('embedded-opentype'),
+         url('../fonts/molten.woff') format('woff'),
+         url('../fonts/molten.ttf') format('truetype'),
+         url('../fonts/molten.svg#MoltenRegular') format('svg');
+	font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FleckRegular';
+    src: url('../fonts/fleck.eot');
+    src: url('../fonts/fleck.eot') format('embedded-opentype'),
+         url('../fonts/fleck.woff') format('woff'),
+         url('../fonts/fleck.ttf') format('truetype'),
+         url('../fonts/fleck.svg#FleckRegular') format('svg');
+		 font-weight: normal;
+   		 font-style: normal;
+}
+
+
+@font-face {
+                font-family: 'Cool3D';
+                src: url('../fonts/Cool3D.ttf');
+}
+
+@font-face {
+    font-family: 'blackjack';
+    src: url('../fonts/blackjack-webfont.eot');
+    src: url('../fonts/blackjack-webfont.eot@#iefix') format('embedded-opentype'),
+         url('../fonts/blackjack-webfont.woff') format('woff'),
+         url('../fonts/blackjack-webfont.ttf') format('truetype'),
+         url('../fonts/blackjack-webfont.svg#blackjackregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+                font-family: 'contrast';
+                src: url('../fonts/contrast.ttf');
+}
+
+@font-face {
+                font-family: 'Heineken';
+                src: url('../fonts/Heineken.ttf');
+}
+
+
+@font-face {
+                font-family: 'OLDFAX';
+                src: url('../fonts/OLDFAX.ttf');
+}
+
+
+/*add more fonts*/

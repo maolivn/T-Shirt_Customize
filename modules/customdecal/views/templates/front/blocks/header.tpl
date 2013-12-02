@@ -9,8 +9,8 @@
     </div>
     <div class="header-menu-back-mid">
         <ul>
-            <li><a id="product-pop" href="JavaScript:void(0);">products</a></li>
-            <li><a class="text_menubar">text</a></li>
+            <li><a id="product-pop">products</a></li>
+            <li><a id="text_menubar">text</a></li>
             <li><a id="image-pop" class="image_menubar">images</a></li>
         </ul>
     </div>

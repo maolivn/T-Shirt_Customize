@@ -157,3 +157,17 @@
     width: auto;
     line-height:22px;
 }
+.tools-fixd-tab-back-field {
+    border: 1px solid #CCCCCC;
+    float: left;
+    height: auto;
+    margin-top: 4px;
+    resize: none;
+    width: 100%;
+}
+#spinner-A, #spinner-B {
+    float: left;
+    height: auto;
+    padding: 2px;
+    width: 42px;
+}
