@@ -19,8 +19,18 @@ $(document).ready(function() {
         fontSize: 30,
         hasRotatingPoint: false,
         hasControls: false,
-        hasBorders: false
+        hasBorders: false,
+        useNative: true
     });
+
+    //fix font-preloading problem
+    $('#font_select option').each(function()
+    {
+        var fontFamily = $(this).val();
+        txtInstance.set('fontFamily', fontFamily);
+        canvas.renderAll();
+    });
+
     canvas.add(txtInstance);
     txtInstance.center().setCoords();
     canvas.renderAll();
@@ -163,14 +173,15 @@ $(function (){
     //Update text
     $('#letter').keyup(function(){
         txtInstance.setText($(this).val());
-        canvas.setActiveObject(txtInstance);
         canvas.renderAll();
     });
 
     //Change text font
     $('#font_select').change(function() {
         txtInstance.setFontFamily($(this).val());
-        canvas.renderAll();
+        txtInstance.setText($('#letter').val());
+        txtInstance.setCoords();
+        canvas.renderAll().bind(canvas);
     });
 
     //BOF create image spinner
