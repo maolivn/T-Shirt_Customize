@@ -13,7 +13,7 @@ $(document).ready(function() {
 
     initCanvas();
 
-    //BOF add text object
+    /** BOF add text object **/
     txtInstance = new fabric.Text('', {
         id: 'text',
         fontSize: 30,
@@ -30,12 +30,12 @@ $(document).ready(function() {
         txtInstance.set('fontFamily', fontFamily);
         canvas.renderAll();
     });
-
+    txtInstance.setFontFamily('ballon');
     canvas.add(txtInstance);
     txtInstance.center().setCoords();
     canvas.renderAll();
     updateTextPosition(txtInstance);
-    //EOF add text object
+    /** EOF add text object **/
 });
 
 $(function (){
@@ -60,7 +60,7 @@ $(function (){
         canvas.renderAll();
     });
 
-    //Create spinner options for image box
+    /** Create spinner options for image box **/
     $( "#ImageRotationSlider" ).slider({
         range: "max",
         value: 0,
@@ -131,9 +131,9 @@ $(function (){
             }
         }
     });
-    //EOF create image slider
+    /** EOF create image slider **/
 
-    //BOF create text slider
+    /** BOF create text slider **/
     $('#slider-range-max').slider({
         range:"max",
         min: 15,
@@ -154,6 +154,13 @@ $(function (){
         value: 0,
         slide: function(event, ui){
             $('#spacetext').val(ui.value);
+            /*var new_text = text_spacing($('#letter').val(),ui.value);
+            canvas.add(new_text);
+            new_text.center().setCoords();
+            canvas.renderAll();*/
+        },
+        stop: function (event, ui) {
+
         }
     });
     $('#slider-range-max-opacity').slider({
@@ -168,12 +175,16 @@ $(function (){
             $('#opactext').val(ui.value);
         }
     });
-    //EOF create text slider
+    /** EOF create text slider **/
 
     //Update text
     $('#letter').keyup(function(){
         txtInstance.setText($(this).val());
         canvas.renderAll();
+        /*var new_text = text_spacing($(this).val(),0);
+        canvas.add(new_text);
+        new_text.center().setCoords();
+        canvas.renderAll();*/
     });
 
     //Change text font
@@ -181,10 +192,10 @@ $(function (){
         txtInstance.setFontFamily($(this).val());
         txtInstance.setText($('#letter').val());
         txtInstance.setCoords();
-        canvas.renderAll().bind(canvas);
+        canvas.renderAll();
     });
 
-    //BOF create image spinner
+    /** BOF create image spinner **/
     $( "#spinner-I" ).spinner({
         step: 1,
         change: function() {
@@ -207,9 +218,9 @@ $(function (){
             canvas.renderAll();
         }
     });
-    //EOF create image spinner
+    /** EOF create image spinner **/
 
-    //BOF create text spinner
+    /** BOF create text spinner **/
     $( "#spinner-A" ).spinner({
         step: 1,
         change: function() {
@@ -232,7 +243,7 @@ $(function (){
             canvas.renderAll();
         }
     });
-    //EOF create text spinner
+    /** EOF create text spinner **/
 
     //Center Image
     $('.image-center').click(function() {
@@ -248,10 +259,43 @@ $(function (){
         updateTextPosition(txtInstance);
     });
 
+    //Update text and image position
     canvas.on('object:moving', function(e) {
         var activeObject = e.target;
         updateImagePosition(activeObject);
         updateTextPosition(activeObject);
+    });
+
+    /** BOF text align handle **/
+    $('.text_align').click(function(){
+        var id = $(this).attr('id');
+        if(id == 'txt_justify')
+            txtInstance.textAlign = 'justify';
+        else if (id == 'txt_right')
+            txtInstance.textAlign = 'right';
+        else if (id == 'txt_center')
+            txtInstance.textAlign = 'center';
+        else if (id == 'txt_left')
+            txtInstance.textAlign = 'left';
+        canvas._adjustPosition && canvas._adjustPosition(txtInstance, value === 'justify' ? 'left' : value);
+        canvas.renderAll();
+    });
+    /** EOF text align handle **/
+
+    //Intergrate text color picker function
+    $('#colorSelector').ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+            $(colpkr).fadeIn(500);
+            return false;
+        },
+        onHide: function (colpkr) {
+            $(colpkr).fadeOut(500);
+            return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+            $('#colorSelector div').css('backgroundColor', '#' + hex);
+        }
     });
 
     //Upload Image
@@ -358,7 +402,7 @@ function initCanvas(){
         position: 'absolute',
         top: 0,
         left: 0,
-        'z-index': 100
+        'z-index': 999
     });
     canvas.setDimensions({width: 500, height: 600});
     canvas.clear();
@@ -369,4 +413,46 @@ function initCanvas(){
     };
     canvas.renderAll();
     //EOF Create Canvas
+}
+function insertSpaces(aString) {
+    return aString.split("").join(" ");
+}
+function text_spacing(str, space) {
+    var txt_arr, group, txt;
+    var text_group = [];
+    var left = 0;
+    txt_arr = str.split("");
+
+    var objects = canvas.getObjects();
+
+    //remove group
+    for (var o in objects) {
+        if (objects[o].id == 'text_group') {
+            canvas.remove(objects[o]);
+            canvas.renderAll();
+        }
+    }
+
+    txt  = txtInstance.clone();
+    txt.id = 'txt_temp';
+    for (var i = 0; i < txt_arr.length; i++) {
+        txt.setText(txt_arr[i]);
+        left = left + txt.width + space;
+        var txt_tmp;
+        txt_tmp = txt.clone();
+        txt_tmp.setText(txt_arr[i]);
+        txt_tmp.left = left;
+        txt_tmp.id = 'text' + i;
+        txt_tmp.visible = true;
+        text_group.push(txt_tmp);
+    }
+    group = new fabric.Group(text_group,{
+        id:'text_group',
+        hasRotatingPoint: false,
+        hasControls: false,
+        hasBorders: false,
+        visible: true
+    });
+
+    return group;
 }

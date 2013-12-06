@@ -44,10 +44,12 @@ class CustomDecal extends Module {
         if ($page == 'CustomDecalDisplay') {
             $this->context->controller->addCSS($this->_path . 'css/jquery-ui/jquery-ui.min.css', 'all');
             $this->context->controller->addCSS($this->_path . 'css/font.css', 'all');
+            $this->context->controller->addCSS($this->_path . 'css/colorpicker.css', 'all');
             $this->context->controller->addCSS($this->_path . 'css/customdecal.css', 'all');
             $this->context->controller->addJS($this->_path . 'js/jquery-ui.min.js');
             $this->context->controller->addJS($this->_path . 'js/fabric.all.min.js');
             $this->context->controller->addJS($this->_path . 'js/fabric.curvedText.js');
+            $this->context->controller->addJS($this->_path . 'js/colorpicker.js');
             $this->context->controller->addJS($this->_path . 'js/fabric_init.js');
         }
     }

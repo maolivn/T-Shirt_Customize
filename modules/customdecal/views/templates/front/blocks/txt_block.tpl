@@ -62,4 +62,26 @@
     <div class="span-container">
         <input type="button" class="span-container-button-style center_align" value="Center">
     </div>
+    <div style="width:100%;margin-top:12px;" class="span-container">
+        <label style="width:auto;line-height:29px;margin-right:4px;" class="tools-fixd-tab-back-label">Align</label>
+
+        <div style="float:right;width:128px;">
+            <span class="text_align" id="txt_justify">
+                <img width="32" height="32" alt="" src="modules/customdecal/img/1374251743_text_align_justity.png">
+            </span>
+            <span class="text_align" id="txt_right">
+               	<img width="32" height="32" alt="" class="right_align" src="modules/customdecal/img/1374251703_text_align_right.png">
+            </span>
+            <span class="text_align" id="txt_center">
+                <img width="32" height="32" alt="" class="center_align" src="modules/customdecal/img/1374251724_text_align_center.png">
+            </span>
+            <span class="text_align" id="txt_left">
+                <img width="32" height="32" alt="" class="left_align" src="modules/customdecal/img/1374251714_text_align_left.png">
+            </span>
+        </div>
+    </div>
+    <div class="span-container">
+        <label style="width:auto;line-height:29px;margin-right:4px;" class="tools-fixd-tab-back-label">Color</label>
+        <div id="colorSelector"><div style="background-color: #0000ff"></div></div>
+    </div>
 </div>

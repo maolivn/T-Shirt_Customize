@@ -171,3 +171,14 @@
     padding: 2px;
     width: 42px;
 }
+.text_align {
+    float:right;
+    cursor:pointer;
+}
+#colorSelector {
+    background: url("../img/colorpicker/select.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    height: 36px;
+    position: relative;
+    width: 36px;
+    float: right;
+}
