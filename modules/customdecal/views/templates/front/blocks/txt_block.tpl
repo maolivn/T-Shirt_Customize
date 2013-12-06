@@ -82,6 +82,45 @@
     </div>
     <div class="span-container">
         <label style="width:auto;line-height:29px;margin-right:4px;" class="tools-fixd-tab-back-label">Color</label>
-        <div id="colorSelector"><div style="background-color: #0000ff"></div></div>
+        <div id="colorSelector">
+            <div style="background-color: #0000ff"></div>
+        </div>
+    </div>
+    <div class="span-container">
+        <label class="tools-fixd-tab-back-label" style="width: auto">Style</label>
+        <span style="float:right;cursor:pointer;" class="text_style">
+            <img src="modules/customdecal/img/italic.png" class="latinetext" alt="" height="26" width="27">
+        </span>
+        <span style="float:right;cursor:pointer;margin-right:3px;" class="text_style">
+            <img src="modules/customdecal/img/underline.png" class="underlinetext" alt="" height="26" width="27">
+        </span>
+        <span style="float:right;cursor:pointer;margin-right:3px;" class="text_style">
+            <img src="modules/customdecal/img/bold.png" alt="" class="boldtext" height="26" width="27">
+        </span>
+    </div>
+    <div class="span-container">
+        <label class="tools-fixd-tab-back-label img-label">Rotator</label>
+        <span style="float:right;">
+            <input type="text" class="slider_value" id="rotatetext" value="0">
+            <div id="slider-range-max-rotate" class="img_slider"></div>
+        </span>
+    </div>
+    <div class="span-container">
+        <label class="tools-fixd-tab-back-label" style="width:auto;line-height:15px;">Curved Text</label>
+        <input type="checkbox" style="float:left;margin:0;padding:0;vertical-align:middle;margin-left:22px;" id="curve_check">
+        <div id="curve_xyz" style="display: inline;float: right;margin-top: 4px;">
+            <input type="text" style="border: 0; color: #f6931f;  font-weight: bold;background: #DDDDDD;font-size: 11px;margin-left: -13px;margin-top: -2px;" id="curve_txt">
+            <div id="slider-range-max-curve_txt"></div>
+        </div>
+    </div>
+    <div style="float:left;margin-top:8px;width:100%;">
+        <label class="tools-fixd-tab-back-label" style="width:auto;line-height:42px;">Flip</label>
+        <span style="float:right;cursor:pointer;" class="flip-txt">
+            <img width="49" height="44" alt="" class="vert-flip" src="modules/customdecal/img/flip-vert.png">
+        </span>
+
+        <span style="float:right;cursor:pointer;margin-right:8px;" class="flip-txt">
+            <img width="49" height="44" alt="" class="hori-flip" src="modules/customdecal/img/flip-horz.png">
+        </span>
     </div>
 </div>

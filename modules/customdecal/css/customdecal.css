@@ -51,7 +51,7 @@
 .block_content {
     background: none repeat scroll 0 0 #DDDDDD;
     float: left;
-    height: 522px;
+    min-height: 522px;
     padding: 8px 18px !important;
     position: relative;
     width: 194px;
@@ -181,4 +181,12 @@
     position: relative;
     width: 36px;
     float: right;
+}
+#colorSelector div {
+    background: url("../img/colorpicker/select.png") repeat scroll center center rgba(0, 0, 0, 0);
+    height: 30px;
+    left: 3px;
+    position: absolute;
+    top: 3px;
+    width: 30px;
 }

@@ -2,8 +2,8 @@
  * Created by Tan on 11/27/13.
  */
 //if(jQuery) alert('jQuery');
-var canvas, imgInstance, txtInstance;
-$(document).ready(function() {
+var canvas, imgInstance, txtInstance, text_obj;
+$(document).ready(function () {
     //Remove Left and Right Column
     $('#left_column').remove();
     $('#right_column').remove();
@@ -15,17 +15,19 @@ $(document).ready(function() {
 
     /** BOF add text object **/
     txtInstance = new fabric.Text('', {
+        originX: 'center',
+        originY: 'center',
         id: 'text',
         fontSize: 30,
         hasRotatingPoint: false,
         hasControls: false,
         hasBorders: false,
-        useNative: true
+        useNative: true,
+        centeredRotation: true
     });
 
     //fix font-preloading problem
-    $('#font_select option').each(function()
-    {
+    $('#font_select option').each(function () {
         var fontFamily = $(this).val();
         txtInstance.set('fontFamily', fontFamily);
         canvas.renderAll();
@@ -38,11 +40,11 @@ $(document).ready(function() {
     /** EOF add text object **/
 });
 
-$(function (){
+$(function () {
     //BOF create image slider
-    $('.vert-flip-image').click(function(e){
+    $('.vert-flip-image').click(function (e) {
         e.preventDefault();
-        if(imgInstance.getFlipX()){
+        if (imgInstance.getFlipX()) {
             imgInstance.setFlipX(false);
         } else {
             imgInstance.setFlipX(true);
@@ -50,9 +52,9 @@ $(function (){
         canvas.renderAll();
     });
 
-    $('.hori-flip-image').click(function(e){
+    $('.hori-flip-image').click(function (e) {
         e.preventDefault();
-        if(imgInstance.getFlipY()){
+        if (imgInstance.getFlipY()) {
             imgInstance.setFlipY(false);
         } else {
             imgInstance.setFlipY(true);
@@ -60,72 +62,81 @@ $(function (){
         canvas.renderAll();
     });
 
-    /** Create spinner options for image box **/
-    $( "#ImageRotationSlider" ).slider({
+    /** BOF create sliders for image **/
+        //Rotate Slider
+    $("#ImageRotationSlider").slider({
         range: "max",
         value: 0,
         min: 0,
         max: 360,
         step: 1,
-        slide: function(event, ui){
+        slide: function (event, ui) {
             $('#rotate_value').val(ui.value);
-            if(imgInstance != undefined) {
+            if (imgInstance != undefined) {
                 imgInstance.setAngle(ui.value).setCoords();
                 canvas.renderAll();
             }
         }
     });
-    $( "#ImageOpacitySlider" ).slider({
+
+    //Opacity Slider
+    $("#ImageOpacitySlider").slider({
         range: "max",
         value: 10,
         min: 1,
         max: 10,
         step: 1,
-        slide: function(event, ui) {
+        slide: function (event, ui) {
             $('#opacity_value').val(ui.value);
-            if(imgInstance != undefined) {
+            if (imgInstance != undefined) {
                 imgInstance.opacity = ui.value / 10;
                 canvas.renderAll();
             }
         }
     });
-    $( "#ImageWidthSlider" ).slider({
+
+    //Width Slider
+    $("#ImageWidthSlider").slider({
         range: "max",
         value: 100,
         min: 30,
         max: 200,
         step: 1,
-        slide: function(event, ui){
+        slide: function (event, ui) {
             $('#width_value').val(ui.value);
-            if(imgInstance != undefined) {
+            if (imgInstance != undefined) {
                 imgInstance.setScaleX(ui.value / 100);
                 canvas.renderAll();
             }
         }
     });
-    $( "#ImageHeightSlider" ).slider({
+
+    //Height Slider
+    $("#ImageHeightSlider").slider({
         range: "max",
         value: 100,
         min: 30,
         max: 200,
         step: 1,
-        slide: function(event, ui){
+        slide: function (event, ui) {
             $('#height_value').val(ui.value);
-            if(imgInstance != undefined) {
+            if (imgInstance != undefined) {
                 imgInstance.setScaleY(ui.value / 100);
                 canvas.renderAll();
             }
         }
     });
-    $( "#ImageSizeSlider" ).slider({
+
+    //Size Slider
+    $("#ImageSizeSlider").slider({
         range: "max",
         value: 0,
         min: 0,
         max: 99,
         step: 1,
-        slide: function(event, ui){
+        slide: function (event, ui) {
             $('#size_value').val(ui.value);
-            if(imgInstance != undefined) {
+            if (imgInstance != undefined) {
                 imgInstance.scale(1 + (ui.value + 1 / 100));
                 canvas.renderAll();
             }
@@ -134,86 +145,108 @@ $(function (){
     /** EOF create image slider **/
 
     /** BOF create text slider **/
+    //Font size slider
     $('#slider-range-max').slider({
-        range:"max",
+        range: "max",
         min: 15,
         max: 100,
         value: 30,
         step: 1,
-        slide: function(event, ui) {
-            txtInstance.setFontSize(ui.value);
+        slide: function (event, ui) {
+            text_obj = getObjectById('text');
+            text_obj.setFontSize(ui.value);
             canvas.renderAll();
             $('#sizetext').val(ui.value);
         }
     });
+
+    //Letter Space Slider
     //TODO: find a way to set letter spacing on canvas
     $('#slider-range-max-space').slider({
         range: "max",
         min: 0,
         max: 10,
         value: 0,
-        slide: function(event, ui){
+        slide: function (event, ui) {
             $('#spacetext').val(ui.value);
             /*var new_text = text_spacing($('#letter').val(),ui.value);
-            canvas.add(new_text);
-            new_text.center().setCoords();
-            canvas.renderAll();*/
+             canvas.add(new_text);
+             new_text.center().setCoords();
+             canvas.renderAll();*/
         },
         stop: function (event, ui) {
 
         }
     });
+
+    //Opacity Slider
     $('#slider-range-max-opacity').slider({
         range: "max",
         value: 10,
         min: 1,
         max: 10,
         step: 1,
-        slide: function(event, ui) {
-            txtInstance.setOpacity(ui.value / 10);
+        slide: function (event, ui) {
+            text_obj = getObjectById('text');
+            text_obj.setOpacity(ui.value / 10);
             canvas.renderAll();
             $('#opactext').val(ui.value);
         }
     });
+
+    //Rotator Slider
+    $('#slider-range-max-rotate').slider({
+        range: "max",
+        value: 0,
+        min: 1,
+        max: 360,
+        step: 1,
+        slide: function (event, ui) {
+            text_obj = getObjectById('text');
+            $('#rotatetext').val(ui.value);
+            if (text_obj != undefined) {
+                text_obj.setAngle(ui.value).setCoords();
+                canvas.renderAll();
+            }
+        }
+    });
+
+    //Curvedtext slider
+    $('#slider-range-max-curve_txt').slider({
+        range: "max",
+        value: 0,
+        min: 0,
+        max: 500,
+        step: 1,
+        slide: function (event, ui) {
+            text_obj = getObjectById('text');
+            $('#curve_txt').val(ui.value);
+            text_obj.set('spacing',ui.value);
+            canvas.renderAll();
+        }
+    });
+    $('#curve_xyz').hide();
     /** EOF create text slider **/
 
-    //Update text
-    $('#letter').keyup(function(){
-        txtInstance.setText($(this).val());
-        canvas.renderAll();
-        /*var new_text = text_spacing($(this).val(),0);
-        canvas.add(new_text);
-        new_text.center().setCoords();
-        canvas.renderAll();*/
-    });
-
-    //Change text font
-    $('#font_select').change(function() {
-        txtInstance.setFontFamily($(this).val());
-        txtInstance.setText($('#letter').val());
-        txtInstance.setCoords();
-        canvas.renderAll();
-    });
-
     /** BOF create image spinner **/
-    $( "#spinner-I" ).spinner({
+    $("#spinner-I").spinner({
         step: 1,
-        change: function() {
+        change: function () {
             imgInstance.setLeft(parseInt($('#spinner-I').val()) * 10).setCoords();
             canvas.renderAll();
         },
-        stop: function() {
+        stop: function () {
             imgInstance.setLeft(parseInt($('#spinner-I').val()) * 10).setCoords();
             canvas.renderAll();
         }
     });
-    $( "#spinner-J" ).spinner({
+    $("#spinner-J").spinner({
         step: 1,
-        change: function() {
+        change: function () {
             imgInstance.setTop(parseInt($('#spinner-J').val()) * 10).setCoords();
             canvas.renderAll();
         },
-        stop: function() {
+        stop: function () {
             imgInstance.setTop(parseInt($('#spinner-J').val()) * 10).setCoords();
             canvas.renderAll();
         }
@@ -221,68 +254,74 @@ $(function (){
     /** EOF create image spinner **/
 
     /** BOF create text spinner **/
-    $( "#spinner-A" ).spinner({
+    $("#spinner-A").spinner({
         step: 1,
-        change: function() {
-            txtInstance.setLeft(parseInt($('#spinner-A').val()) * 10).setCoords();
+        change: function () {
+            text_obj = getObjectById('text');
+            text_obj.setLeft(parseInt($('#spinner-A').val()) * 10).setCoords();
             canvas.renderAll();
         },
-        stop: function() {
-            txtInstance.setLeft(parseInt($('#spinner-A').val()) * 10).setCoords();
+        stop: function () {
+            text_obj = getObjectById('text');
+            text_obj.setLeft(parseInt($('#spinner-A').val()) * 10).setCoords();
             canvas.renderAll();
         }
     });
-    $( "#spinner-B" ).spinner({
+    $("#spinner-B").spinner({
         step: 1,
-        change: function() {
-            txtInstance.setTop(parseInt($('#spinner-B').val()) * 10).setCoords();
+        change: function () {
+            text_obj = getObjectById('text');
+            text_obj.setTop(parseInt($('#spinner-B').val()) * 10).setCoords();
             canvas.renderAll();
         },
-        stop: function() {
-            txtInstance.setTop(parseInt($('#spinner-B').val()) * 10).setCoords();
+        stop: function () {
+            text_obj = getObjectById('text');
+            text_obj.setTop(parseInt($('#spinner-B').val()) * 10).setCoords();
             canvas.renderAll();
         }
     });
     /** EOF create text spinner **/
 
     //Center Image
-    $('.image-center').click(function() {
-       imgInstance.center().setCoords();
-       canvas.renderAll();
-       updateImagePosition(imgInstance);
+    $('.image-center').click(function () {
+        imgInstance.center().setCoords();
+        canvas.renderAll();
+        updateImagePosition(imgInstance);
     });
 
     //Center Text
-    $('.center_align').click(function() {
-        txtInstance.centerH();
+    $('.center_align').click(function () {
+        text_obj = getObjectById('text');
+        text_obj.centerH();
         canvas.renderAll();
-        updateTextPosition(txtInstance);
+        updateTextPosition(text_obj);
     });
 
     //Update text and image position
-    canvas.on('object:moving', function(e) {
+    canvas.on('object:moving', function (e) {
         var activeObject = e.target;
         updateImagePosition(activeObject);
         updateTextPosition(activeObject);
     });
 
     /** BOF text align handle **/
-    $('.text_align').click(function(){
+    $('.text_align').click(function () {
+        text_obj = getObjectById('text');
         var id = $(this).attr('id');
-        if(id == 'txt_justify')
-            txtInstance.textAlign = 'justify';
+        if (id == 'txt_justify')
+            text_obj.textAlign = 'justify';
         else if (id == 'txt_right')
-            txtInstance.textAlign = 'right';
+            text_obj.textAlign = 'right';
         else if (id == 'txt_center')
-            txtInstance.textAlign = 'center';
+            text_obj.textAlign = 'center';
         else if (id == 'txt_left')
-            txtInstance.textAlign = 'left';
-        canvas._adjustPosition && canvas._adjustPosition(txtInstance, value === 'justify' ? 'left' : value);
+            text_obj.textAlign = 'left';
+        canvas._adjustPosition && canvas._adjustPosition(text_obj, value === 'justify' ? 'left' : value);
         canvas.renderAll();
     });
     /** EOF text align handle **/
 
-    //Intergrate text color picker function
+    /** BOF intergrate text color picker function **/
     $('#colorSelector').ColorPicker({
         color: '#0000ff',
         onShow: function (colpkr) {
@@ -295,14 +334,83 @@ $(function (){
         },
         onChange: function (hsb, hex, rgb) {
             $('#colorSelector div').css('backgroundColor', '#' + hex);
+        },
+        onSubmit: function (hsb, hex, rgb, div) {
+            text_obj = getObjectById('text');
+            text_obj.setColor('#' + hex);
+            canvas.renderAll();
         }
     });
+    /** EOF intergrate text color picker function **/
 
+    /** BOF text style format **/
+    $('.text_style').click(function () {
+        var img = $(this).find('img');
+        text_obj = getObjectById('text');
+
+        //Check if text has styled
+        var isItalic = getStyle(text_obj, 'fontStyle') === 'italic';
+        var isUnderline = (getStyle(text_obj, 'textDecoration') || '').indexOf('underline') > -1;
+        var isBold = getStyle(text_obj, 'fontWeight') === 'bold';
+
+        if (img.hasClass('latinetext'))
+            setStyle(text_obj, 'fontStyle', isItalic ? '' : 'italic');
+        else if (img.hasClass('underlinetext'))
+            setStyle(text_obj, 'textDecoration', isUnderline ? '' : 'underline');
+        else if (img.hasClass('boldtext'))
+            setStyle(text_obj, 'fontWeight', isBold ? '' : 'bold');
+        canvas.renderAll();
+    });
+    /** EOF text style format **/
+
+    /** BOF curved text handle **/
+    $('#curve_check').click(function () {
+        var obj = getObjectById('text');
+        var default_text = $('#letter').val();
+        var props = txtInstance.toObject();
+        var textSample;
+
+        if (/curvedText/.test(obj.type)) {
+            $('#curve_xyz').hide();
+            props = obj.toObject();
+            delete props['type'];
+            textSample = new fabric.Text(default_text, props);
+        } else if (/text/.test(obj.type)) {
+            $('#curve_xyz').show();
+            delete props['type'];
+            props['textAlign'] = 'center';
+            props['radius'] = 50;
+            props['spacing'] = 20;
+            textSample = new fabric.CurvedText(default_text, props);
+        }
+        textSample.id = 'text';
+        canvas.remove(obj);
+        canvas.add(textSample).renderAll();
+    });
+    /** EOF curved text handle **/
+
+    //Flipt text
+    $('.flip-txt').click(function() {
+        text_obj = getObjectById('text');
+        var type = $(this).find('img');
+        if(type.hasClass('vert-flip')) {
+            if(text_obj.getFlipX())
+                text_obj.setFlipX(false);
+            else
+                text_obj.setFlipX(true);
+        } else if(type.hasClass('hori-flip')) {
+            if(text_obj.getFlipY())
+                text_obj.setFlipY(false);
+            else
+                text_obj.setFlipY(true);
+        }
+        canvas.renderAll();
+    });
     //Upload Image
     $('#image-pop').click(function () {
         var img_block = $('#image_block');
 
-        if(img_block.hasClass('hide')){
+        if (img_block.hasClass('hide')) {
             $('#txt_block').addClass('hide');
             img_block.removeClass('hide');
         }
@@ -314,12 +422,32 @@ $(function (){
     });
 
     //Show text panel
-    $('#text_menubar').click(function() {
+    $('#text_menubar').click(function () {
         var txt_block = $('#txt_block');
-        if(txt_block.hasClass('hide')){
+        if (txt_block.hasClass('hide')) {
             $('#image_block').addClass('hide');
             txt_block.removeClass('hide');
         }
+    });
+
+    //Update text
+    $('#letter').keyup(function () {
+        text_obj = getObjectById('text');
+        text_obj.setText($(this).val());
+        canvas.renderAll();
+        /*var new_text = text_spacing($(this).val(),0);
+         canvas.add(new_text);
+         new_text.center().setCoords();
+         canvas.renderAll();*/
+    });
+
+    //Change text font
+    $('#font_select').change(function () {
+        text_obj = getObjectById('text');
+        text_obj.setFontFamily($(this).val());
+        text_obj.setText($('#letter').val());
+        text_obj.setCoords();
+        canvas.renderAll();
     });
 });
 
@@ -382,10 +510,10 @@ function initStage(image) {
 
     updateImagePosition(imgInstance);
     //Reset Slider Value
-    $( "#ImageRotationSlider" ).slider( "value", 0 );
-    $( "#rotate_value" ).val(0);
+    $("#ImageRotationSlider").slider("value", 0);
+    $("#rotate_value").val(0);
 }
-function updateImagePosition(object){
+function updateImagePosition(object) {
     $('#spinner-I').val(Math.round(object.getLeft() / 10));
     $('#spinner-J').val(Math.round(object.getTop() / 10));
 }
@@ -393,7 +521,7 @@ function updateTextPosition(obj) {
     $('#spinner-A').val(Math.round(obj.getLeft() / 10));
     $('#spinner-B').val(Math.round(obj.getTop() / 10));
 }
-function initCanvas(){
+function initCanvas() {
     //BOF Create Canvas
     canvas = new fabric.Canvas('canvas', {
         controlsAboveOverlay: true
@@ -406,9 +534,9 @@ function initCanvas(){
     });
     canvas.setDimensions({width: 500, height: 600});
     canvas.clear();
-    canvas.clipTo = function(ctx) {
+    canvas.clipTo = function (ctx) {
         ctx.beginPath();
-        ctx.rect((canvas.width / 2) - 100, (canvas.height / 2) - 200 ,200, 300);
+        ctx.rect((canvas.width / 2) - 100, (canvas.height / 2) - 200, 200, 300);
         ctx.closePath();
     };
     canvas.renderAll();
@@ -433,7 +561,7 @@ function text_spacing(str, space) {
         }
     }
 
-    txt  = txtInstance.clone();
+    txt = txtInstance.clone();
     txt.id = 'txt_temp';
     for (var i = 0; i < txt_arr.length; i++) {
         txt.setText(txt_arr[i]);
@@ -446,8 +574,8 @@ function text_spacing(str, space) {
         txt_tmp.visible = true;
         text_group.push(txt_tmp);
     }
-    group = new fabric.Group(text_group,{
-        id:'text_group',
+    group = new fabric.Group(text_group, {
+        id: 'text_group',
         hasRotatingPoint: false,
         hasControls: false,
         hasBorders: false,
@@ -455,4 +583,28 @@ function text_spacing(str, space) {
     });
 
     return group;
+}
+function getStyle(object, styleName) {
+    return (object.getSelectionStyles && object.isEditing)
+        ? object.getSelectionStyles()[styleName]
+        : object[styleName];
+}
+function setStyle(object, styleName, value) {
+    if (object.setSelectionStyles && object.isEditing) {
+        var style = { };
+        style[styleName] = value;
+        object.setSelectionStyles(style);
+        object.setCoords();
+    }
+    else {
+        object[styleName] = value;
+    }
+    canvas.renderAll();
+}
+function getObjectById(id) {
+    var objects = canvas.getObjects();
+    for (var i in objects) {
+        if (objects[i].id == id)
+            return objects[i];
+    }
 }
