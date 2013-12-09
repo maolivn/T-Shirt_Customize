@@ -13,11 +13,5 @@
     </div>
 </div>
 <div id="decal_right" class="left">
-    <div class="block tags_block" id="tags_block_left">
-        <p class="title_block">Text Filter Effects</p>
-
-        <p class="block_content">
-
-        </p>
-    </div>
+    {include file="$block_tpl_path/effects_block.tpl"}
 </div>

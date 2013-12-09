@@ -280,6 +280,63 @@ $(function () {
             canvas.renderAll();
         }
     });
+    $("#spinner-C").spinner({
+        step: 1,
+        change: function () {
+            setShadow($('#highlightSelector div').css('backgroundColor'), 0, 0, $('#spinner-C').val());
+        },
+        stop: function () {
+            setShadow($('#highlightSelector div').css('backgroundColor'), 0, 0, $('#spinner-C').val());
+        }
+    });
+
+    $("#spinner-D").spinner({
+        step: 1,
+        max: 2,
+        change: function () {
+            setShadow($('#highlightSelector div').css('backgroundColor'), 0, 0, $('#spinner-D').val() * 2);
+        },
+        stop: function () {
+            setShadow($('#highlightSelector div').css('backgroundColor'), 0, 0, $('#spinner-D').val() * 2);
+        }
+    });
+    $("#spinner-E").spinner({
+        step: 1,
+        change: function (event, ui) {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val());
+        },
+        stop: function () {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val());
+        }
+    });
+    $("#spinner-F").spinner({
+        step: 1,
+        change: function () {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val());
+        },
+        stop: function () {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val());
+        }
+    });
+    $("#spinner-G").spinner({
+        step: 1,
+        change: function () {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val());
+        },
+        stop: function () {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val());
+        }
+    });
+    $("#spinner-H").spinner({
+        max: 2,
+        step: 1,
+        change: function () {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val() * 2);
+        },
+        stop: function () {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val()* 2);
+        }
+    });
     /** EOF create text spinner **/
 
     //Center Image
@@ -322,6 +379,7 @@ $(function () {
     /** EOF text align handle **/
 
     /** BOF intergrate text color picker function **/
+    //text color selector
     $('#colorSelector').ColorPicker({
         color: '#0000ff',
         onShow: function (colpkr) {
@@ -339,6 +397,44 @@ $(function () {
             text_obj = getObjectById('text');
             text_obj.setColor('#' + hex);
             canvas.renderAll();
+        }
+    });
+
+    //text highlight color selector
+    $('#highlightSelector').ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+            $(colpkr).fadeIn(500);
+            return false;
+        },
+        onHide: function (colpkr) {
+            $(colpkr).fadeOut(500);
+            return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+            $('#highlightSelector div').css('backgroundColor', '#' + hex);
+        },
+        onSubmit: function (hsb, hex, rgb, div) {
+
+        }
+    });
+
+    //shadow highlight color selector
+    $('#shadowSelector').ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+            $(colpkr).fadeIn(500);
+            return false;
+        },
+        onHide: function (colpkr) {
+            $(colpkr).fadeOut(500);
+            return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+            $('#shadowSelector div').css('backgroundColor', '#' + hex);
+        },
+        onSubmit: function (hsb, hex, rgb, div) {
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), 0);
         }
     });
     /** EOF intergrate text color picker function **/
@@ -406,6 +502,7 @@ $(function () {
         }
         canvas.renderAll();
     });
+
     //Upload Image
     $('#image-pop').click(function () {
         var img_block = $('#image_block');
@@ -427,6 +524,23 @@ $(function () {
         if (txt_block.hasClass('hide')) {
             $('#image_block').addClass('hide');
             txt_block.removeClass('hide');
+        }
+    });
+
+    //Change effect container
+    $('.text_effect_btn').click(function() {
+        var id = $(this).attr('id');
+        $('.text_effect_btn').not(document.getElementById(id)).removeClass('active');
+        $(this).addClass('active');
+        switch (id) {
+            case 'glow_btn':
+                $('#shadow_effect').hide();
+                $('#glow_effect').show();
+                break;
+            case 'shadow_btn':
+                $('#glow_effect').hide();
+                $('#shadow_effect').show();
+                break;
         }
     });
 
@@ -607,4 +721,14 @@ function getObjectById(id) {
         if (objects[i].id == id)
             return objects[i];
     }
+}
+function setShadow(color, x, y, blur){
+    text_obj = getObjectById('text');
+    text_obj.setShadow({
+        offsetX: x,
+        offsetY: y,
+        color: color,
+        blur: blur
+    });
+    canvas.renderAll();
 }

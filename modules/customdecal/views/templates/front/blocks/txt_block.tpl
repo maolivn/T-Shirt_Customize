@@ -82,7 +82,7 @@
     </div>
     <div class="span-container">
         <label style="width:auto;line-height:29px;margin-right:4px;" class="tools-fixd-tab-back-label">Color</label>
-        <div id="colorSelector">
+        <div id="colorSelector" class="colorPickerContainer">
             <div style="background-color: #0000ff"></div>
         </div>
     </div>
