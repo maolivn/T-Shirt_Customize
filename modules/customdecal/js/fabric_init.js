@@ -2,7 +2,7 @@
  * Created by Tan on 11/27/13.
  */
 //if(jQuery) alert('jQuery');
-var canvas, imgInstance, txtInstance, text_obj, img_obj;
+var canvas;
 $(document).ready(function () {
     //Remove Left and Right Column
     $('#left_column').remove();
@@ -13,27 +13,30 @@ $(document).ready(function () {
 
     initCanvas();
 
-    textInit(txtInstance);
+    textInit();
 });
 
 $(function () {
+    var text_obj, img_obj;
     //BOF create image slider
     $('.vert-flip-image').click(function (e) {
+        var img_obj = getObjectById('image');
         e.preventDefault();
-        if (imgInstance.getFlipX()) {
-            imgInstance.setFlipX(false);
+        if (img_obj.getFlipX()) {
+            img_obj.setFlipX(false);
         } else {
-            imgInstance.setFlipX(true);
+            img_obj.setFlipX(true);
         }
         canvas.renderAll();
     });
 
     $('.hori-flip-image').click(function (e) {
+        var img_obj = getObjectById('image');
         e.preventDefault();
-        if (imgInstance.getFlipY()) {
-            imgInstance.setFlipY(false);
+        if (img_obj.getFlipY()) {
+            img_obj.setFlipY(false);
         } else {
-            imgInstance.setFlipY(true);
+            img_obj.setFlipY(true);
         }
         canvas.renderAll();
     });
@@ -47,9 +50,10 @@ $(function () {
         max: 360,
         step: 1,
         slide: function (event, ui) {
+            var img_obj = getObjectById('image');
             $('#rotate_value').val(ui.value);
-            if (imgInstance != undefined) {
-                imgInstance.setAngle(ui.value).setCoords();
+            if (img_obj != undefined) {
+                img_obj.setAngle(ui.value).setCoords();
                 canvas.renderAll();
             }
         }
@@ -63,9 +67,10 @@ $(function () {
         max: 10,
         step: 1,
         slide: function (event, ui) {
+            var img_obj = getObjectById('image');
             $('#opacity_value').val(ui.value);
-            if (imgInstance != undefined) {
-                imgInstance.opacity = ui.value / 10;
+            if (img_obj != undefined) {
+                img_obj.opacity = ui.value / 10;
                 canvas.renderAll();
             }
         }
@@ -79,9 +84,10 @@ $(function () {
         max: 200,
         step: 1,
         slide: function (event, ui) {
+            var img_obj = getObjectById('image');
             $('#width_value').val(ui.value);
-            if (imgInstance != undefined) {
-                imgInstance.setScaleX(ui.value / 100);
+            if (img_obj != undefined) {
+                img_obj.setScaleX(ui.value / 100);
                 canvas.renderAll();
             }
         }
@@ -95,9 +101,10 @@ $(function () {
         max: 200,
         step: 1,
         slide: function (event, ui) {
+            var img_obj = getObjectById('image');
             $('#height_value').val(ui.value);
-            if (imgInstance != undefined) {
-                imgInstance.setScaleY(ui.value / 100);
+            if (img_obj != undefined) {
+                img_obj.setScaleY(ui.value / 100);
                 canvas.renderAll();
             }
         }
@@ -111,9 +118,10 @@ $(function () {
         max: 99,
         step: 1,
         slide: function (event, ui) {
+            var img_obj = getObjectById('image');
             $('#size_value').val(ui.value);
-            if (imgInstance != undefined) {
-                imgInstance.scale(1 + (ui.value + 1 / 100));
+            if (img_obj != undefined) {
+                img_obj.scale(1 + (ui.value + 1 / 100));
                 canvas.renderAll();
             }
         }
@@ -208,22 +216,26 @@ $(function () {
     $("#spinner-I").spinner({
         step: 1,
         change: function () {
-            imgInstance.setLeft(parseInt($('#spinner-I').val()) * 10).setCoords();
+            var img_obj = getObjectById('image');
+            img_obj.setLeft(parseInt($('#spinner-I').val()) * 10).setCoords();
             canvas.renderAll();
         },
         stop: function () {
-            imgInstance.setLeft(parseInt($('#spinner-I').val()) * 10).setCoords();
+            var img_obj = getObjectById('image');
+            img_obj.setLeft(parseInt($('#spinner-I').val()) * 10).setCoords();
             canvas.renderAll();
         }
     });
     $("#spinner-J").spinner({
         step: 1,
         change: function () {
-            imgInstance.setTop(parseInt($('#spinner-J').val()) * 10).setCoords();
+            var img_obj = getObjectById('image');
+            img_obj.setTop(parseInt($('#spinner-J').val()) * 10).setCoords();
             canvas.renderAll();
         },
         stop: function () {
-            imgInstance.setTop(parseInt($('#spinner-J').val()) * 10).setCoords();
+            var img_obj = getObjectById('image');
+            img_obj.setTop(parseInt($('#spinner-J').val()) * 10).setCoords();
             canvas.renderAll();
         }
     });
@@ -321,7 +333,8 @@ $(function () {
 
     //Center Image
     $('.image-center').click(function () {
-        imgInstance.center().setCoords();
+        var img_obj = getObjectById('image');
+        img_obj.center().setCoords();
         canvas.renderAll();
         updateImagePosition(imgInstance);
     });
@@ -527,7 +540,6 @@ $(function () {
     //Update text
     $('#letter').keyup(function () {
         text_obj = getObjectById('text');
-
         if(text_obj === undefined){
             textInit();
             text_obj = getObjectById('text');
@@ -549,13 +561,32 @@ $(function () {
     });
 
     //Layer sortable Init
-    $('.shortable').sortable();
+    $('.shortable').sortable({
+        update: function(event, ui) {
+            var end_pos = $(ui.item).index();
+            var drag_id = $(ui.item).attr("id");
+            var text_obj = getObjectById('text');
+            var img_obj = getObjectById('image');
+            if(drag_id == 'showtext') {
+                if(end_pos == 0)
+                    text_obj.bringToFront();
+                else
+                    text_obj.sendToBack();
+            } else if (drag_id == 'showimage') {
+                if(end_pos == 0)
+                    img_obj.bringToFront();
+                else
+                    img_obj.sendToBack();
+            }
+            canvas.renderAll();
+        }
+    });
 
     //Remove layers
     $('.layer_close_btn').click(function() {
         var id = $(this).attr('id');
         text_obj = getObjectById('text');
-        img_obj = getObjectById('image');
+        var img_obj = getObjectById('image');
 
         $(this).parent().hide();
 
@@ -572,7 +603,6 @@ $(function () {
 function fileSelect(evt) {
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         var files = evt.target.files;
-
         var reader;
         var file;
         for (var i = 0; file = files[i]; i++) {
@@ -609,11 +639,11 @@ function loadImages(sources, callback) {
 function initStage(image) {
     //Remove old image object if exist
     var img = getObjectById('image');
-    console.log(img);
     canvas.remove(img);
 
     //Create Image
-    imgInstance = new fabric.Image(image, {
+    var imgInstance = new fabric.Image(image, {
+        id: 'image',
         left: 0,
         top: 0,
         originX: 'center',
@@ -624,7 +654,6 @@ function initStage(image) {
         lockUniScaling: true,
         centeredRotation: true
     });
-    imgInstance.id = 'image';
 
     canvas.add(imgInstance);
     canvas.setActiveObject(imgInstance);
@@ -639,7 +668,7 @@ function initStage(image) {
 
     //Add image to layer item
     var src = imgInstance.toDataURL();
-    $('#showimage span').html('<img width="45" height="45" src ="' + src + '">');
+    $('#showimage').show().find('span').html('<img width="45" height="45" src ="' + src + '">');
 }
 function updateImagePosition(object) {
     $('#spinner-I').val(Math.round(object.getLeft() / 10));
@@ -734,8 +763,6 @@ function getObjectById(id) {
     for (var i in objects) {
         if (objects[i].id == id)
             return objects[i];
-        else
-            return false;
     }
 }
 function setShadow(color, x, y, blur){
@@ -750,7 +777,7 @@ function setShadow(color, x, y, blur){
 }
 
 function textInit(){
-    txtInstance = new fabric.Text('', {
+    var txtInstance = new fabric.Text('', {
         originX: 'center',
         originY: 'center',
         id: 'text',
