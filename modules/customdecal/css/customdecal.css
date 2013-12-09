@@ -213,3 +213,41 @@
     padding: 2px;
     width: 56px;
 }
+.drop-down {
+    float: left;
+    height: 200px;
+    position: relative;
+    width: 100%;
+}
+.layers_canvas {
+    border: 3px solid rgb(213, 226, 224);
+    border-radius: 15px;
+    background: none repeat scroll 0% 0% rgb(102, 102, 102);
+    color: rgb(255, 255, 255);
+    font-size: 32px;
+    padding: 18px;
+    font-weight: bold;
+    position: relative;
+}
+#showimage {
+    color: rgb(255, 255, 255);
+    font-size: 17px;
+    padding: 3px;
+    min-height: 45px;
+}
+#showimage span {
+    width: 45px;
+}
+.layers_canvas span {
+    margin: 0 auto;
+    width: 75%;
+    float: none;
+    word-wrap: break-word;
+    line-height: 1;
+    display: block;
+}
+.layer_close_btn {
+    position: absolute;
+    right: -5px;
+    top: -5px;
+}

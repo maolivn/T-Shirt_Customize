@@ -2,7 +2,7 @@
  * Created by Tan on 11/27/13.
  */
 //if(jQuery) alert('jQuery');
-var canvas, imgInstance, txtInstance, text_obj;
+var canvas, imgInstance, txtInstance, text_obj, img_obj;
 $(document).ready(function () {
     //Remove Left and Right Column
     $('#left_column').remove();
@@ -13,31 +13,7 @@ $(document).ready(function () {
 
     initCanvas();
 
-    /** BOF add text object **/
-    txtInstance = new fabric.Text('', {
-        originX: 'center',
-        originY: 'center',
-        id: 'text',
-        fontSize: 30,
-        hasRotatingPoint: false,
-        hasControls: false,
-        hasBorders: false,
-        useNative: true,
-        centeredRotation: true
-    });
-
-    //fix font-preloading problem
-    $('#font_select option').each(function () {
-        var fontFamily = $(this).val();
-        txtInstance.set('fontFamily', fontFamily);
-        canvas.renderAll();
-    });
-    txtInstance.setFontFamily('ballon');
-    canvas.add(txtInstance);
-    txtInstance.center().setCoords();
-    canvas.renderAll();
-    updateTextPosition(txtInstance);
-    /** EOF add text object **/
+    textInit(txtInstance);
 });
 
 $(function () {
@@ -280,6 +256,8 @@ $(function () {
             canvas.renderAll();
         }
     });
+
+    //Glow effect
     $("#spinner-C").spinner({
         step: 1,
         change: function () {
@@ -300,6 +278,8 @@ $(function () {
             setShadow($('#highlightSelector div').css('backgroundColor'), 0, 0, $('#spinner-D').val() * 2);
         }
     });
+
+    //Shadow effect
     $("#spinner-E").spinner({
         step: 1,
         change: function (event, ui) {
@@ -415,7 +395,7 @@ $(function () {
             $('#highlightSelector div').css('backgroundColor', '#' + hex);
         },
         onSubmit: function (hsb, hex, rgb, div) {
-
+            setShadow($('#highlightSelector div').css('backgroundColor'), 0, 0, $('#spinner-C').val());
         }
     });
 
@@ -434,7 +414,7 @@ $(function () {
             $('#shadowSelector div').css('backgroundColor', '#' + hex);
         },
         onSubmit: function (hsb, hex, rgb, div) {
-            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), 0);
+            setShadow($('#shadowSelector div').css('backgroundColor'), $('#spinner-E').val(), $('#spinner-F').val(), $('#spinner-G').val());
         }
     });
     /** EOF intergrate text color picker function **/
@@ -527,7 +507,7 @@ $(function () {
         }
     });
 
-    //Change effect container
+    //Effect container switcher
     $('.text_effect_btn').click(function() {
         var id = $(this).attr('id');
         $('.text_effect_btn').not(document.getElementById(id)).removeClass('active');
@@ -547,12 +527,16 @@ $(function () {
     //Update text
     $('#letter').keyup(function () {
         text_obj = getObjectById('text');
+
+        if(text_obj === undefined){
+            textInit();
+            text_obj = getObjectById('text');
+        }
         text_obj.setText($(this).val());
         canvas.renderAll();
-        /*var new_text = text_spacing($(this).val(),0);
-         canvas.add(new_text);
-         new_text.center().setCoords();
-         canvas.renderAll();*/
+        $('#showtext').show().find('span').html($(this).val());
+        if($(this).val() == '')
+            $('#showtext').hide();
     });
 
     //Change text font
@@ -561,6 +545,26 @@ $(function () {
         text_obj.setFontFamily($(this).val());
         text_obj.setText($('#letter').val());
         text_obj.setCoords();
+        canvas.renderAll();
+    });
+
+    //Layer sortable Init
+    $('.shortable').sortable();
+
+    //Remove layers
+    $('.layer_close_btn').click(function() {
+        var id = $(this).attr('id');
+        text_obj = getObjectById('text');
+        img_obj = getObjectById('image');
+
+        $(this).parent().hide();
+
+        if (id == 'text_cross') {
+            $('#letter').val('');
+            canvas.remove(text_obj);
+        } else if ( id =='image_cross') {
+            canvas.remove(img_obj);
+        }
         canvas.renderAll();
     });
 });
@@ -603,6 +607,11 @@ function loadImages(sources, callback) {
 }
 
 function initStage(image) {
+    //Remove old image object if exist
+    var img = getObjectById('image');
+    console.log(img);
+    canvas.remove(img);
+
     //Create Image
     imgInstance = new fabric.Image(image, {
         left: 0,
@@ -623,9 +632,14 @@ function initStage(image) {
     canvas.renderAll();
 
     updateImagePosition(imgInstance);
+
     //Reset Slider Value
     $("#ImageRotationSlider").slider("value", 0);
     $("#rotate_value").val(0);
+
+    //Add image to layer item
+    var src = imgInstance.toDataURL();
+    $('#showimage span').html('<img width="45" height="45" src ="' + src + '">');
 }
 function updateImagePosition(object) {
     $('#spinner-I').val(Math.round(object.getLeft() / 10));
@@ -720,6 +734,8 @@ function getObjectById(id) {
     for (var i in objects) {
         if (objects[i].id == id)
             return objects[i];
+        else
+            return false;
     }
 }
 function setShadow(color, x, y, blur){
@@ -731,4 +747,30 @@ function setShadow(color, x, y, blur){
         blur: blur
     });
     canvas.renderAll();
+}
+
+function textInit(){
+    txtInstance = new fabric.Text('', {
+        originX: 'center',
+        originY: 'center',
+        id: 'text',
+        fontSize: 30,
+        hasRotatingPoint: false,
+        hasControls: false,
+        hasBorders: false,
+        useNative: true,
+        centeredRotation: true
+    });
+
+    //fix font-preloading problem
+    $('#font_select option').each(function () {
+        var fontFamily = $(this).val();
+        txtInstance.set('fontFamily', fontFamily);
+        canvas.renderAll();
+    });
+    txtInstance.setFontFamily('ballon');
+    canvas.add(txtInstance);
+    txtInstance.center().setCoords();
+    canvas.renderAll();
+    updateTextPosition(txtInstance);
 }

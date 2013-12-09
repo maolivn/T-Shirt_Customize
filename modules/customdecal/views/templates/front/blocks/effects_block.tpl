@@ -1,6 +1,6 @@
 <div class="block tags_block" id="tags_block_left">
     <div class="title_block">Text Filter Effects</div>
-    <div class="block_content">
+    <div class="block_content" style="min-height: 200px">
         <div class="tools-body-left-slider-right-tabhead">
             <ul>
                 <li><a id="glow_btn" class="active text_effect_btn" style="width:172px;">Glow Effect</a></li>
@@ -45,6 +45,27 @@
             <div class="span-container">
                 <label style="width:auto;line-height:22px;margin-right:4px;" class="tools-fixd-tab-back-label">Strenght</label>
                 <span style="float: right"><input value="0" name="value" id="spinner-H"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="block_content" style="min-height: 200px">
+        <div class="tools-body-left-slider-right-tabhead-B">
+            <ul>
+                <li><a class="active layer_btn" style="width:84px;">Layers</a></li>
+                <li><a style="width:84px;" class="layer_btn">Product</a></li>
+            </ul>
+            <div class="drop-down">
+                <div class="help-list-tab-mater shortable">
+                    <div id="showtext" style="display: none;" class="layers_canvas">
+                        <span></span>
+                        <img width="17" height="17" src="modules/customdecal/img/close.png" id="text_cross" class="layer_close_btn">
+                    </div>
+                    <div id="showimage" style="display: none;" class="layers_canvas">
+                        <span></span>
+                        <img width="17" height="17" src="modules/customdecal/img/close.png" id="image_cross" class="layer_close_btn">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
